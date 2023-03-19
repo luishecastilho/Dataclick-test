@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('faturas', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->unsignedBigInteger('relation_id');
+            $table->date('expiry_date');
+            $table->boolean('paid')->default(false);
+            $table->decimal('amount', 8, 2);
             $table->timestamps();
+
+            $table->foreign('relation_id')->references('id')->on('usuario_clube__relations');
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('faturas');
     }
 };
