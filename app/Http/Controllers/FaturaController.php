@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class FaturaController extends Controller
 {
@@ -11,9 +10,8 @@ class FaturaController extends Controller
      * filtro por usuario padrão
      * pode ter faturas de varios clubes pro mesmo usuario
      */
-    public function list(): View
+    public function list()
     {
-        return view();
     }
 
     /**

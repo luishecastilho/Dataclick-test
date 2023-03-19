@@ -13,12 +13,17 @@ class UsuarioController extends Controller
      */
     public function list(): View
     {
-        return view();
+        return view('usuarios.list', ["usuarios" => [
+            "0" => ["name" => "Usuário 1"],
+            "1" => ["name" => "Usuário 2"],
+            "2" => ["name" => "Usuário 3"],
+            ]
+        ]);
     }
 
     public function createForm(): View
     {
-        return view();
+        return view('usuarios.create');
     }
 
     public function create()
@@ -27,7 +32,7 @@ class UsuarioController extends Controller
 
     public function editForm(int $id): View
     {
-        return view();
+        return view('usuarios.edit', ["usuario" => ["name" => "Usuário #".$id]]);
 
     }
 

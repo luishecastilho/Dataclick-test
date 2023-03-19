@@ -13,12 +13,17 @@ class ClubeController extends Controller
      */
     public function list(): View
     {
-        return view();
+        return view('usuarios.list', ["clubes" => [
+            "0" => ["name" => "Clube 1"],
+            "1" => ["name" => "Clube 2"],
+            "2" => ["name" => "Clube 3"],
+            ]
+        ]);
     }
 
     public function createForm(): View
     {
-        return view();
+        return view('usuarios.create');
     }
 
     public function create()
@@ -27,7 +32,7 @@ class ClubeController extends Controller
 
     public function editForm(int $id): View
     {
-        return view();
+        return view('usuarios.edit', ["clube" => ["name" => "Clube #".$id]]);
     }
 
     public function edit(int $id)
