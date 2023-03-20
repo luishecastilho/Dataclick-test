@@ -34,18 +34,12 @@ Route::prefix('usuarios')->group(function () {
 
     Route::post('/delete/{id}', [UsuarioController::class, 'delete'])->name('usuarios.delete');
 
-    Route::post('/joinclube/{user_id}/{clube_id}', [UsuarioController::class, 'joinClube'])->name('usuarios.joinClube');
+    Route::post('/joinclube/{usuario_id}/{clube_id}', [UsuarioController::class, 'joinClube'])->name('usuarios.joinClube');
 
     Route::get('/details/{id}', [UsuarioController::class, 'details'])->name('usuarios.details');
 });
 
-Route::prefix('faturas')->group(function () {
-    Route::get('/', [FaturaController::class, 'list'])->name('faturas.list');
-
-    Route::post('/create', [FaturaController::class, 'createNewSingaturePlan'])->name('faturas.createNewSingaturePlan');
-
-    Route::put('/payment/{id}', [FaturaController::class, 'newPayment'])->name('faturas.newPayment');
-});
+Route::put('/faturas/payment/{usuario_id}', [FaturaController::class, 'newPayment'])->name('faturas.newPayment');
 
 Route::fallback(function () {
     echo 'Essa rota não existe, <a href="'.route('home.home').'">aqui</a> para voltar.';

@@ -4,7 +4,7 @@
     <h1>list usuarios</h1>
     <ul>
     @foreach($usuarios as $usuario)
-        <li>{{ $usuario["name"] }}</li>
+        <li>{{ json_encode($usuario) }}</li>
     @endforeach
     </ul>
 @endsection

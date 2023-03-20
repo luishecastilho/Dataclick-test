@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Usuario_Clube__relation extends Model
 {
     use HasFactory;
+
+    protected $table = 'usuario_clube__relations';
+    protected $fillable = ['valid', 'usuario_id', 'clube_id'];
+
 }

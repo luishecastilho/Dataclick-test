@@ -2,29 +2,54 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Fatura;
+use App\Models\Usuario_Clube__relation;
 
 class FaturaController extends Controller
 {
-    /**
-     * filtro por usuario padrão
-     * pode ter faturas de varios clubes pro mesmo usuario
-     */
-    public function list()
+    public function newPayment(int $usuario_id)
     {
+        $fatura = Fatura::find($usuario_id);
+        try{
+            $fatura->paid = true;
+            return $fatura->save();
+        }catch(\Exception $e){
+            return false;
+        }
     }
 
-    /**
-     * cria 12 faturas para os proximos 12 meses
-     */
-    public function createNewSingaturePlan()
+    public static function list(int $usuario_id, int $clube_id = 0)
     {
+        if($clube_id) {
+            $relations = Usuario_Clube__relation::where('usuario_id', '=', $usuario_id)
+                        ->where('clube_id', '=', $clube_id)
+                        ->get('id')
+                        ->toArray();
+        }else{
+            $relations = Usuario_Clube__relation::where('usuario_id', '=', $usuario_id)
+                        ->get('id')
+                        ->toArray();
+        }
+        $faturas = Fatura::whereIn('relation_id', array_column($relations, 'id'))->get()->toArray();
+
+        return $faturas;
     }
 
-    /**
-     * atualiza status de pagamento
-     */
-    public function newPayment(int $id)
+    public static function createNewSingaturePlan(int $relation_id): bool
     {
+        try{
+            for($m = 1; $m <= 12; $m++)
+            {
+                Fatura::create([
+                    'relation_id' => $relation_id,
+                    'expiry_date' => date('Y-m-d', strtotime(' + '.$m.' months')),
+                    'amount' => 129.99
+                ]);
+            }
+
+            return true;
+        }catch(\Exception $e) {
+            return false;
+        }
     }
 }

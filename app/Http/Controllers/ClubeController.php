@@ -5,19 +5,25 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+use App\Models\Clube;
+use App\Models\Usuario_Clube__relation;
+
 class ClubeController extends Controller
 {
-    /**
-     * lista todos os clubes
-     * possibilidade de filtrar por usuario
-     */
-    public function list(): View
+    public function list(Request $request): View
     {
-        return view('clubes.list', ["clubes" => [
-            "0" => ["name" => "Clube 1"],
-            "1" => ["name" => "Clube 2"],
-            "2" => ["name" => "Clube 3"],
-            ]
+        if($request->get('usuario')) {
+            $relations = Usuario_Clube__relation::where('usuario_id', '=', $request->get('usuario'))
+                                                ->get('clube_id')
+                                                ->toArray();
+            $clubes = Clube::whereIn('id', array_column($relations, 'clube_id'))->get()->toArray();
+        }else{
+            $clubes = Clube::all()->toArray();
+        }
+
+        // ->toJson()
+        return view('clubes.list', [
+            "clubes" => $clubes
         ]);
     }
 
@@ -26,24 +32,42 @@ class ClubeController extends Controller
         return view('clubes.create');
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        return Clube::create($request->post());
     }
 
     public function editForm(int $id): View
     {
-        return view('clubes.edit', ["clube" => ["name" => "Clube #".$id]]);
+        $clube = Clube::find($id)->toArray();
+
+        // ->toJson()
+        return view('clubes.edit', [
+            "clube" => $clube
+        ]);
     }
 
-    public function edit(int $id)
+    public function edit(Request $request, int $id)
     {
+        $clube = Clube::find($id);
+        try{
+            $clube->fill($request->post());
+            return $clube->save();
+        }catch(\Exception $e){
+            return false;
+        }
     }
 
-    /**
-     * soft delete
-     * deleta a relação com usuarios
-     */
-    public function delete(int $id)
+    public function delete(int $id): bool
     {
+        try{
+            // soft delete clube
+            Clube::find($id)->delete();
+
+            // soft delete all relationships
+            Usuario_Clube__relation::where('clube_id','=', $id)->delete();
+        } catch(\Exception $e){
+            return false;
+        }
     }
 }
