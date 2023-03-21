@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -17,14 +18,15 @@ class UsuarioController extends Controller
             $relations = Usuario_Clube__relation::where('clube_id', '=', $request->get('clube'))
                                                 ->get('usuario_id')
                                                 ->toArray();
-            $usuarios = Usuario::whereIn('id', array_column($relations, 'usuario_id'))->get()->toArray();
+            $usuarios = Usuario::whereIn('id', array_column($relations, 'usuario_id'))->get()->toJson();
         }else{
-            $usuarios = Usuario::all()->toArray();
+            $usuarios = Usuario::all()->toJson();
         }
 
         // ->toJson()
         return view('usuarios.list', [
-            "usuarios" => $usuarios
+            "usuarios" => $usuarios,
+            "uri" => Route::getCurrentRoute()->uri
         ]);
     }
 

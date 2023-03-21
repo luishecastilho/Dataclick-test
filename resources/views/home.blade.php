@@ -1,10 +1,11 @@
 @extends('master')
+@extends('layouts.sidebar')
 
 @section('content')
-    <h1>Homepage</h1>
-    {{ json_encode($usuarios) }}
-    <br>
-    {{ json_encode($clubes) }}
-    <br>
-    <App />
+    <Home
+        clubes="{{ $clubes }}"
+        usuarios="{{ $usuarios }}"
+    ></Home>
 @endsection
+
+</main>

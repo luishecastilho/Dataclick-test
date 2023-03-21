@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\View\View;
 
 use App\Models\Usuario;
@@ -15,8 +16,9 @@ class HomeController extends Controller
         $clubes = Clube::all()->toArray();
 
         return view('home', [
-            "usuarios" => $usuarios,
-            "clubes" => $clubes
+            "usuarios" => count($usuarios),
+            "clubes" => count($clubes),
+            "uri" => Route::getCurrentRoute()->uri
         ]);
     }
 }
