@@ -2,9 +2,7 @@
 @extends('layouts.sidebar')
 
 @section('content')
-    <Home
-        clubes="{{ $clubes }}"
-    ></Home>
+    <ClubesList />
 @endsection
 
 </main>

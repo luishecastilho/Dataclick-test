@@ -1,7 +1,8 @@
 @extends('master')
+@extends('layouts.sidebar')
 
 @section('content')
-    <h1>edit clubes</h1>
-
-    <h3>{{ json_encode($clube) }}</h3>
+    <Clubesform cluube="fafafa" />
 @endsection
+
+</main>

@@ -11,18 +11,23 @@ use App\Models\Usuario_Clube__relation;
 
 class ClubeController extends Controller
 {
-    public function list(Request $request): View
+    public function list(Request $request)
     {
         if($request->get('usuario')) {
-            $relations = Usuario_Clube__relation::where('usuario_id', '=', $request->get('usuario'))
-                                                ->get('clube_id')
-                                                ->toArray();
-            $clubes = Clube::whereIn('id', array_column($relations, 'clube_id'))->get()->toJson();
+            $relations = Usuario_Clube__relation::where('usuario_id', '=', $request->get('usuario'))->get('clube_id');
+            $clubes = Clube::whereIn('id', array_column($relations, 'clube_id'))->get();
         }else{
-            $clubes = Clube::all()->toJson();
+            $clubes = Clube::all();
+        }
+        for($c = 0; $c < count($clubes); $c++){
+            $qtdUsuarios = Usuario_Clube__relation::where('clube_id', '=', $clubes[$c]['id'])->count();
+            $clubes[$c]['count'] = $qtdUsuarios;
         }
 
-        // ->toJson()
+        if($request->ajax())
+        {
+            return response()->json(json_encode($clubes));
+        }
         return view('clubes.list', [
             "clubes" => $clubes,
             "uri" => Route::getCurrentRoute()->uri
@@ -31,7 +36,9 @@ class ClubeController extends Controller
 
     public function createForm(): View
     {
-        return view('clubes.create');
+        return view('clubes.create', [
+            "uri" => Route::getCurrentRoute()->uri
+        ]);
     }
 
     public function create(Request $request)
@@ -39,13 +46,16 @@ class ClubeController extends Controller
         return Clube::create($request->post());
     }
 
+    public function show(int $id)
+    {
+        return response()->json(json_encode(["clube_id" => $id]));
+    }
+
     public function editForm(int $id): View
     {
-        $clube = Clube::find($id)->toArray();
-
-        // ->toJson()
         return view('clubes.edit', [
-            "clube" => $clube
+            "clube_id" => $id,
+            "uri" => Route::getCurrentRoute()->uri
         ]);
     }
 
@@ -67,7 +77,7 @@ class ClubeController extends Controller
             Clube::find($id)->delete();
 
             // soft delete all relationships
-            Usuario_Clube__relation::where('clube_id','=', $id)->delete();
+            return Usuario_Clube__relation::where('clube_id','=', $id)->update(['valid'=>false]);
         } catch(\Exception $e){
             return false;
         }

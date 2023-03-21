@@ -17,6 +17,8 @@ Route::prefix('clubes')->group(function () {
     Route::get('/create', [ClubeController::class, 'createForm'])->name('clubes.createForm');
     Route::post('/create', [ClubeController::class, 'create'])->name('clubes.create');
 
+    Route::get('/show/{id}', [ClubeController::class, 'show'])->name('clubes.show');
+
     Route::get('/edit/{id}', [ClubeController::class, 'editForm'])->name('clubes.editForm');
     Route::put('/edit/{id}', [ClubeController::class, 'edit'])->name('clubes.edit');
 

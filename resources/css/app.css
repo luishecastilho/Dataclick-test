@@ -48,3 +48,8 @@ overflow-y: auto;
     width: 100%;
     height:75%;
 }
+
+/* Tables */
+table tr {
+    line-height: 3em;
+}

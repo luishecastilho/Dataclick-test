@@ -5,7 +5,7 @@
             <div class="card-body">
                 <h5 class="card-title">Clubes</h5>
                 <p class="card-text">Hoje há {{ clubes }} clubes em parceria.</p>
-                <a href="/clubes" class="btn btn-primary">Detalhes</a>
+                <a href="/clubes" class="btn btn-outline-secondary">Detalhes</a>
             </div>
         </div>
         <div class="card">
@@ -13,7 +13,7 @@
             <div class="card-body">
                 <h5 class="card-title">Usuarios</h5>
                 <p class="card-text">Hoje há {{ usuarios }} usuários vinculados à plataforma.</p>
-                <a href="/usuarios" class="btn btn-primary">Detalhes</a>
+                <a href="/usuarios" class="btn btn-outline-secondary">Detalhes</a>
             </div>
         </div>
     </div>
