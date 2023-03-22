@@ -53,3 +53,8 @@ overflow-y: auto;
 table tr {
     line-height: 3em;
 }
+
+
+.container .form-box {
+    width: 100%;
+}

@@ -43,18 +43,31 @@ class ClubeController extends Controller
 
     public function create(Request $request)
     {
-        return Clube::create($request->post());
+        $form = $request->post();
+
+        return Clube::create(
+            [
+                "name" => $form['name'],
+                "icon" => $form['icon'],
+                "country" => $form['country'],
+                "countryFlag" => $form['countryFlag']
+            ]
+        );
     }
 
     public function show(int $id)
     {
-        return response()->json(json_encode(["clube_id" => $id]));
+        $clube = Clube::find($id)->toJson();
+
+        return response()->json($clube);
     }
 
     public function editForm(int $id): View
     {
+        $clube = Clube::find($id)->toJson();
+
         return view('clubes.edit', [
-            "clube_id" => $id,
+            "clube" => $clube,
             "uri" => Route::getCurrentRoute()->uri
         ]);
     }

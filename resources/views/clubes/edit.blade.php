@@ -2,7 +2,7 @@
 @extends('layouts.sidebar')
 
 @section('content')
-    <Clubesform cluube="fafafa" />
+    <ClubesEditForm :clube="{{ $clube }}"></ClubesEditForm>
 @endsection
 
 </main>
