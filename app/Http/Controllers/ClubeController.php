@@ -13,23 +13,22 @@ class ClubeController extends Controller
 {
     public function list(Request $request)
     {
-        if($request->get('usuario')) {
-            $relations = Usuario_Clube__relation::where('usuario_id', '=', $request->get('usuario'))->get('clube_id');
-            $clubes = Clube::whereIn('id', array_column($relations, 'clube_id'))->get();
-        }else{
-            $clubes = Clube::all();
-        }
-        for($c = 0; $c < count($clubes); $c++){
-            $qtdUsuarios = Usuario_Clube__relation::where('clube_id', '=', $clubes[$c]['id'])->count();
-            $clubes[$c]['count'] = $qtdUsuarios;
-        }
-
         if($request->ajax())
         {
+            if($request->get('usuario')) {
+                $relations = Usuario_Clube__relation::where('usuario_id', '=', $request->get('usuario'))->get('clube_id');
+                $clubes = Clube::whereIn('id', array_column($relations, 'clube_id'))->get();
+            }else{
+                $clubes = Clube::all();
+            }
+            for($c = 0; $c < count($clubes); $c++){
+                $qtdUsuarios = Usuario_Clube__relation::where('clube_id', '=', $clubes[$c]['id'])->count();
+                $clubes[$c]['count'] = $qtdUsuarios;
+            }
+
             return response()->json(json_encode($clubes));
         }
         return view('clubes.list', [
-            "clubes" => $clubes,
             "uri" => Route::getCurrentRoute()->uri
         ]);
     }

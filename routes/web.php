@@ -42,7 +42,7 @@ Route::prefix('usuarios')->group(function () {
 });
 
 // falta testar
-Route::put('/faturas/payment/{usuario_id}', [FaturaController::class, 'newPayment'])->name('faturas.newPayment');
+Route::put('/faturas/payment/{id}', [FaturaController::class, 'newPayment'])->name('faturas.newPayment')->where('id', '[0-9]+');
 
 Route::fallback(function () {
     echo 'Essa rota não existe, <a href="'.route('home.home').'">aqui</a> para voltar.';

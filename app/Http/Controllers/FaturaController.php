@@ -7,9 +7,9 @@ use App\Models\Usuario_Clube__relation;
 
 class FaturaController extends Controller
 {
-    public function newPayment(int $usuario_id)
+    public function newPayment(int $id)
     {
-        $fatura = Fatura::find($usuario_id);
+        $fatura = Fatura::find($id);
         try{
             $fatura->paid = true;
             return $fatura->save();
@@ -30,7 +30,7 @@ class FaturaController extends Controller
                         ->get('id')
                         ->toArray();
         }
-        $faturas = Fatura::whereIn('relation_id', array_column($relations, 'id'))->get()->toArray();
+        $faturas = Fatura::whereIn('relation_id', array_column($relations, 'id'))->get()->toJson();
 
         return $faturas;
     }
@@ -51,5 +51,19 @@ class FaturaController extends Controller
         }catch(\Exception $e) {
             return false;
         }
+    }
+
+    public function statusPayment($usuario_id, $clube_id): bool
+    {
+        $faturas = json_decode($this::list($usuario_id, $clube_id), true);
+
+        foreach($faturas as $fatura)
+        {
+            if(!$fatura["paid"] && strtotime("now") > strtotime($fatura['expiry_date']))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -14,24 +14,23 @@ class UsuarioController extends Controller
 {
     public function list(Request $request)
     {
-        if($request->get('clube')) {
-            $relations = Usuario_Clube__relation::where('clube_id', '=', $request->get('clube'))->get('usuario_id');
-            $usuarios = Usuario::whereIn('id', array_column($relations, 'usuario_id'))->get();
-        }else{
-            $usuarios = Usuario::all();
-        }
-        for($u = 0; $u < count($usuarios); $u++){
-            $qtdClubes = Usuario_Clube__relation::where('usuario_id', '=', $usuarios[$u]['id'])->count();
-            $usuarios[$u]['count'] = $qtdClubes;
-        }
-
         if($request->ajax())
         {
+            if($request->get('clube')) {
+                $relations = Usuario_Clube__relation::where('clube_id', '=', $request->get('clube'))->get('usuario_id');
+                $usuarios = Usuario::whereIn('id', array_column($relations, 'usuario_id'))->get();
+            }else{
+                $usuarios = Usuario::all();
+            }
+            for($u = 0; $u < count($usuarios); $u++){
+                $qtdClubes = Usuario_Clube__relation::where('usuario_id', '=', $usuarios[$u]['id'])->count();
+                $usuarios[$u]['count'] = $qtdClubes;
+            }
+
             return response()->json(json_encode($usuarios));
         }
 
         return view('usuarios.list', [
-            "usuarios" => $usuarios,
             "uri" => Route::getCurrentRoute()->uri
         ]);
     }
@@ -97,6 +96,37 @@ class UsuarioController extends Controller
         }
     }
 
+    public function details(int $id)
+    {
+        $usuario = Usuario::find($id)->toJson();
+
+        $relations = Usuario_Clube__relation::where('usuario_id', '=', $id)->get();
+        $clubes = [];
+        foreach($relations as $relation)
+        {
+            $tmp = Clube::find($relation['clube_id']);
+            if(!$relation["valid"])
+            {
+                $tmp["status"] = 'Inativo';
+            }else{
+                $status = (new FaturaController())->statusPayment($id, $relation['clube_id']);
+
+                if(!$status){
+                    $tmp["status"] = "Inadimplente";
+                }else{
+                    $tmp["status"] = "Ativo";
+                }
+            }
+            array_push($clubes, $tmp);
+        }
+
+        return view('usuarios.details', [
+            "usuario" => $usuario,
+            "clubes" => json_encode($clubes),
+            "uri" => Route::getCurrentRoute()->uri
+        ]);
+    }
+
     public function joinClube(int $usuario_id, int $clube_id): bool
     {
         $relation_id = Usuario_Clube__relation::create([
@@ -105,24 +135,5 @@ class UsuarioController extends Controller
         ])->id;
 
         return FaturaController::createNewSingaturePlan($relation_id);
-    }
-
-    public function details(int $id, Request $request): View
-    {
-        $usuario = Usuario::find($id);
-
-        $relations = Usuario_Clube__relation::where('usuario_id', '=', $id)
-                                            ->get('clube_id')
-                                            ->toArray();
-        $clubes = Clube::whereIn('id', array_column($relations, 'clube_id'))->get()->toArray();
-
-        $faturas = FaturaController::list($id);
-
-        // ->toJson()
-        return view('usuarios.details', [
-            "usuario" => $usuario,
-            "clubes" => $clubes,
-            "faturas" => $faturas
-        ]);
     }
 }
