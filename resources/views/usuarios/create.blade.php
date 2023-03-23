@@ -1,5 +1,8 @@
 @extends('master')
+@extends('layouts.sidebar')
 
 @section('content')
-    <h1>createForm usuarios</h1>
+    <Usuarioscreateform></Usuarioscreateform>
 @endsection
+
+</main>

@@ -10,8 +10,8 @@
                     <tr>
                         <th class="text-center" scope="col">#</th>
                         <th scope="col">Nome</th>
-                        <th class="text-center" scope="col">Relações</th>
-                        <th class="text-center" scope="col">País</th>
+                        <th scope="col">Relações</th>
+                        <th scope="col">País</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -23,10 +23,10 @@
                         <td>
                             <span>{{ clube.name }}</span>
                         </td>
-                        <td class="text-center">
+                        <td>
                             <span>{{ clube.count }} usuários</span>
                         </td>
-                        <td class="text-center">
+                        <td>
                             <img :src="clube.countryFlag" :alt="clube.country" style="width: 25px; height: 25px;">
                             &nbsp;&nbsp;
                             <span>{{ clube.country }}</span>
@@ -66,7 +66,7 @@
         methods: {
             async deleteClube(key, clube) {
                 if(confirm("Você realmente deseja deletar o clube "+clube.name+"?\nIsso irá apagar todas as relações dele!!! Total: "+clube.count)){
-                    await axios.post("http://127.0.0.1:8000/clubes/delete/"+clube.id)
+                    await axios.delete("http://127.0.0.1:8000/clubes/"+clube.id)
                     .then(
                         this.clubes.splice(key, 1)
                     );

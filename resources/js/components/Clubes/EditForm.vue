@@ -65,7 +65,7 @@
             }
         },
         mounted() {
-            axios.get("http://127.0.0.1:8000/clubes/show/"+this.clube.id)
+            axios.get("http://127.0.0.1:8000/clubes/"+this.clube.id)
             .then(response => {
                     this.form = JSON.parse(response.data)
             })

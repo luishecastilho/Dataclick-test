@@ -2,9 +2,7 @@
 @extends('layouts.sidebar')
 
 @section('content')
-    <Home
-        usuarios="{{ $usuarios }}"
-    ></Home>
+    <UsuariosList />
 @endsection
 
 </main>
