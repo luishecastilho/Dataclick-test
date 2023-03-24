@@ -36,14 +36,13 @@ Route::prefix('usuarios')->group(function () {
     Route::get('/edit/{id}', [UsuarioController::class, 'editForm'])->name('usuarios.editForm')->where('id', '[0-9]+');
     Route::put('/edit/{id}', [UsuarioController::class, 'edit'])->name('usuarios.edit')->where('id', '[0-9]+');
 
-    // falta testar
     Route::get('/details/{id}', [UsuarioController::class, 'details'])->name('usuarios.details')->where('id', '[0-9]+');
 
-    // falta testar
     Route::post('/joinclube/{usuario_id}/{clube_id}', [UsuarioController::class, 'joinClube'])->name('usuarios.joinClube')->where('usuario_id', '[0-9]+')->where('clube_id', '[0-9]+');
 });
 
-// falta testar
+Route::get('/faturas/{usuario_id}/{clube_id}', [FaturaController::class, 'list'])->name('faturas.list')->where('usuario_id', '[0-9]+')->where('clube_id', '[0-9]+');
+
 Route::put('/faturas/payment/{id}', [FaturaController::class, 'newPayment'])->name('faturas.newPayment')->where('id', '[0-9]+');
 
 Route::fallback(function () {

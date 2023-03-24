@@ -102,3 +102,18 @@ table tr .clube_coutryFlag {
 .container #detalhes #clubes .list-group #joinClubForm select {
     margin-right: .5em
 }
+
+/* Modal */
+#faturasModal .modal-header img {
+    margin-left: 1.5em;
+    width: 50px;
+    height: 100%;
+}
+
+#faturasModal .modal-body span {
+    font-size: 13px;
+}
+
+#faturasModal .modal-body button {
+    margin-left: .5em
+}
