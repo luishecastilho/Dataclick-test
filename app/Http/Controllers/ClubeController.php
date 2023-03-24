@@ -11,14 +11,10 @@ use App\Models\Usuario_Clube__relation;
 
 class ClubeController extends Controller
 {
-    public function list(Request $request)
+    public function list(): View
     {
-        if($request->get('usuario')) {
-            $relations = Usuario_Clube__relation::where('usuario_id', '=', $request->get('usuario'))->get('clube_id');
-            $clubes = Clube::whereIn('id', array_column($relations, 'clube_id'))->orderBy('id', 'asc')->get();
-        }else{
-            $clubes = Clube::all();
-        }
+        $clubes = Clube::all();
+
         for($c = 0; $c < count($clubes); $c++){
             $qtdUsuarios = Usuario_Clube__relation::where('clube_id', '=', $clubes[$c]['id'])->count();
             $clubes[$c]['count'] = $qtdUsuarios;
@@ -64,7 +60,7 @@ class ClubeController extends Controller
         ]);
     }
 
-    public function edit(Request $request, int $id)
+    public function edit(Request $request, int $id): bool
     {
         $clube = Clube::find($id);
         try{

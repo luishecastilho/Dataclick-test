@@ -12,14 +12,10 @@ use App\Models\Usuario_Clube__relation;
 
 class UsuarioController extends Controller
 {
-    public function list(Request $request)
+    public function list(): View
     {
-        if($request->get('clube')) {
-            $relations = Usuario_Clube__relation::where('clube_id', '=', $request->get('clube'))->get('usuario_id');
-            $usuarios = Usuario::whereIn('id', array_column($relations, 'usuario_id'))->orderBy('id', 'asc')->get();
-        }else{
-            $usuarios = Usuario::all();
-        }
+        $usuarios = Usuario::all();
+
         for($u = 0; $u < count($usuarios); $u++){
             $qtdClubes = Usuario_Clube__relation::where('usuario_id', '=', $usuarios[$u]['id'])->count();
             $usuarios[$u]['count'] = $qtdClubes;
@@ -60,7 +56,7 @@ class UsuarioController extends Controller
         ]);
     }
 
-    public function edit(Request $request, int $id)
+    public function edit(Request $request, int $id): bool
     {
         $usuario = Usuario::find($id);
         try{
@@ -84,7 +80,7 @@ class UsuarioController extends Controller
         }
     }
 
-    public function details(int $id)
+    public function details(int $id): View
     {
         $usuario = Usuario::find($id)->toJson();
 

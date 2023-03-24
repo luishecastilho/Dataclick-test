@@ -7,7 +7,7 @@ use App\Models\Usuario_Clube__relation;
 
 class FaturaController extends Controller
 {
-    public function newPayment(int $id)
+    public function newPayment(int $id): bool
     {
         $fatura = Fatura::find($id);
         try{
@@ -18,18 +18,13 @@ class FaturaController extends Controller
         }
     }
 
-    public static function list(int $usuario_id, int $clube_id = 0)
+    public static function list(int $usuario_id, int $clube_id)
     {
-        if($clube_id) {
             $relations = Usuario_Clube__relation::where('usuario_id', '=', $usuario_id)
                         ->where('clube_id', '=', $clube_id)
                         ->get('id')
                         ->toArray();
-        }else{
-            $relations = Usuario_Clube__relation::where('usuario_id', '=', $usuario_id)
-                        ->get('id')
-                        ->toArray();
-        }
+
         $faturas = Fatura::whereIn('relation_id', array_column($relations, 'id'))->get()->toJson();
 
         return $faturas;
