@@ -127,13 +127,17 @@ class UsuarioController extends Controller
         ]);
     }
 
-    public function joinClube(int $usuario_id, int $clube_id): bool
+    public function joinClube(int $usuario_id, int $clube_id)
     {
         $relation_id = Usuario_Clube__relation::create([
             'usuario_id' => $usuario_id,
             'clube_id' => $clube_id
         ])->id;
 
-        return FaturaController::createNewSingaturePlan($relation_id);
+        FaturaController::createNewSingaturePlan($relation_id);
+
+        $relations = Usuario_Clube__relation::where('usuario_id', '=', $usuario_id)->get()->toArray();
+        $clubes = Clube::whereIn('id', array_column($relations, 'clube_id'))->get()->toJson();
+        return $clubes;
     }
 }

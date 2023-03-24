@@ -2,7 +2,7 @@
     <div class="container d-flex">
         <div class="form-box bg-light p-5 d-flex flex-column">
             <h2 class="mb-5">Editar - #{{this.usuario.id }} {{this.usuario.name }}</h2>
-            <form id="editForm" class="">
+            <form id="editForm">
                 <div class="mb-3">
                     <label for="name" class="form-label">Nome</label>
                     <input type="text" class="form-control" id="name" name="name" v-model="form.name">
