@@ -18,7 +18,7 @@ class UsuarioController extends Controller
         {
             if($request->get('clube')) {
                 $relations = Usuario_Clube__relation::where('clube_id', '=', $request->get('clube'))->get('usuario_id');
-                $usuarios = Usuario::whereIn('id', array_column($relations, 'usuario_id'))->get();
+                $usuarios = Usuario::whereIn('id', array_column($relations, 'usuario_id'))->orderBy('id', 'asc')->get();
             }else{
                 $usuarios = Usuario::all();
             }
@@ -100,25 +100,7 @@ class UsuarioController extends Controller
     {
         $usuario = Usuario::find($id)->toJson();
 
-        $relations = Usuario_Clube__relation::where('usuario_id', '=', $id)->get();
-        $clubes = [];
-        foreach($relations as $relation)
-        {
-            $tmp = Clube::find($relation['clube_id']);
-            if(!$relation["valid"])
-            {
-                $tmp["status"] = 'Inativo';
-            }else{
-                $status = (new FaturaController())->statusPayment($id, $relation['clube_id']);
-
-                if(!$status){
-                    $tmp["status"] = "Inadimplente";
-                }else{
-                    $tmp["status"] = "Ativo";
-                }
-            }
-            array_push($clubes, $tmp);
-        }
+        $clubes = $this->getClubesRelations($id);
 
         return view('usuarios.details', [
             "usuario" => $usuario,
@@ -136,8 +118,30 @@ class UsuarioController extends Controller
 
         FaturaController::createNewSingaturePlan($relation_id);
 
-        $relations = Usuario_Clube__relation::where('usuario_id', '=', $usuario_id)->get()->toArray();
-        $clubes = Clube::whereIn('id', array_column($relations, 'clube_id'))->get()->toJson();
+        return $this->getClubesRelations($usuario_id);
+    }
+
+    private function getClubesRelations(int $usuario_id)
+    {
+        $relations = Usuario_Clube__relation::where('usuario_id', '=', $usuario_id)->orderBy('id', 'asc')->get();
+        $clubes = [];
+        foreach($relations as $relation)
+        {
+            $tmp = Clube::find($relation['clube_id']);
+            if(!$relation["valid"])
+            {
+                $tmp["status"] = 'Inativo';
+            }else{
+                $status = (new FaturaController())->statusPayment($usuario_id, $relation['clube_id']);
+
+                if(!$status){
+                    $tmp["status"] = "Inadimplente";
+                }else{
+                    $tmp["status"] = "Ativo";
+                }
+            }
+            array_push($clubes, $tmp);
+        }
         return $clubes;
     }
 }

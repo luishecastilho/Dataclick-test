@@ -42,16 +42,12 @@
                             </div>
                         </li>
 
-                        <li class="list-group-item d-flex flex-row justify-content-between align-items-center text-secondary">
+                        <li class="list-group-item d-flex flex-row justify-content-between align-items-center text-secondary" style="line-height: 2.4rem" v-if="joinClubForm === false">
                             Adicionar um clube <button type="button" class="btn btn-outline-primary" @click="showJoinClubForm"><i class='fa fa-plus' aria-hidden='true'></i></button>
                         </li>
-                    </ul>
-                    <div id="joinClubForm" class="mt-5" v-if="joinClubForm === true">
-                        <h4>Adicionar clube</h4>
-                        <form action="POST">
-                            <div class="mb-3">
-                                <label for="clube_id" class="form-label">Clube:</label>
-                                <select class="form-select" id="clubesSelect" name="clube_id" v-model="form.clube_id">
+                        <li class="list-group-item d-flex flex-row justify-content-between align-items-center" v-else>
+                            <form action="POST" class="d-flex flex-row align-items-center" style="margin: 0">
+                                <select class="form-select" id="clubesSelect" name="clube_id" v-model="form.clube_id" style="margin-right: .5em">
                                     <option value="0" disabled>-- Selecione --</option>
                                     <option
                                     :key="clubeForm.id"
@@ -59,10 +55,11 @@
                                     v-for="clubeForm in clubesForm"
                                     >{{ clubeForm.name }}</option>
                                 </select>
-                            </div>
-                            <button type="button" class="btn btn-outline-primary" @click="joinClub">Adicionar</button>
-                        </form>
-                    </div>
+                                <button type="button" class="btn btn-outline-primary" @click="joinClub">Adicionar</button>
+                            </form>
+                            <button type="button" class="btn btn-outline-danger" @click="showJoinClubForm"><i class='fa fa-close' aria-hidden='true'></i></button>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -87,21 +84,20 @@
             this.relationedClubs = this.clubes;
         },
         methods: {
-            async payment(id) {
+            /*async payment(id) {
                 var response = await axios.post("http://127.0.0.1:8000/faturas/payment/"+id)
                 if (response.status == 200){
                     window.location.href = `http://127.0.0.1:8000/usuarios/details/${this.usuario.id}`
                 }else{
                     alert("Erro ao pagar a Fatura, tente novamente!")
                 }
-            },
+            },*/
             async showJoinClubForm() {
                 if(!this.joinClubForm){
                     this.joinClubForm = true;
-                    axios.get("http://127.0.0.1:8000/clubes")
+                    axios.get(`http://127.0.0.1:8000/clubes/exceptions/${this.usuario.id}`)
                     .then(response => {
-                        this.clubesForm = JSON.parse(response.data);
-                        window.scrollTo(0, document.body.scrollHeight);
+                        this.clubesForm = response.data;
                     })
                     .catch(error => {
                         console.error(error)

@@ -17,7 +17,7 @@ class ClubeController extends Controller
         {
             if($request->get('usuario')) {
                 $relations = Usuario_Clube__relation::where('usuario_id', '=', $request->get('usuario'))->get('clube_id');
-                $clubes = Clube::whereIn('id', array_column($relations, 'clube_id'))->get();
+                $clubes = Clube::whereIn('id', array_column($relations, 'clube_id'))->orderBy('id', 'asc')->get();
             }else{
                 $clubes = Clube::all();
             }
@@ -31,6 +31,12 @@ class ClubeController extends Controller
         return view('clubes.list', [
             "uri" => Route::getCurrentRoute()->uri
         ]);
+    }
+
+    public function listExceptions(int $usuario_id)
+    {
+        $relations = Usuario_Clube__relation::where('usuario_id', '=', $usuario_id)->get('clube_id')->toArray();
+        return Clube::whereNotIn('id', array_column($relations, 'clube_id'))->orderBy('id', 'asc')->get()->toJson();
     }
 
     public function createForm(): View

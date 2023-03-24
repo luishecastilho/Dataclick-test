@@ -16,6 +16,8 @@ Route::prefix('clubes')->group(function () {
     Route::get('/{id}', [ClubeController::class, 'show'])->name('clubes.show')->where('id', '[0-9]+');
     Route::delete('/{id}', [ClubeController::class, 'delete'])->name('clubes.delete')->where('id', '[0-9]+');
 
+    Route::get('/exceptions/{usuario_id}', [ClubeController::class, 'listExceptions'])->name('clubes.listExceptions');
+
     Route::get('/create', [ClubeController::class, 'createForm'])->name('clubes.createForm');
     Route::post('/create', [ClubeController::class, 'create'])->name('clubes.create');
 
