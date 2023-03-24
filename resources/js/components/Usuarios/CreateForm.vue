@@ -36,7 +36,7 @@
         },
         methods: {
             async save() {
-                var response = await axios.post("http://127.0.0.1:8000/usuarios/create", {
+                await axios.post("http://127.0.0.1:8000/usuarios/create", {
                     name: this.form.name,
                     email: this.form.email,
                     phone: this.form.phone

@@ -2,7 +2,7 @@
 @extends('layouts.sidebar')
 
 @section('content')
-    <UsuariosList />
+    <UsuariosList :usuarios={{ $usuarios }}>
 @endsection
 
 </main>

@@ -50,7 +50,7 @@
         },
         methods: {
             async save() {
-                var response = await axios.post("http://127.0.0.1:8000/clubes/create", {
+                await axios.post("http://127.0.0.1:8000/clubes/create", {
                     name: this.form.name,
                     icon: this.form.icon,
                     country: this.form.country,

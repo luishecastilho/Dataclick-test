@@ -1,7 +1,7 @@
 <template>
     <div class="container d-flex">
         <div class="form-box bg-light p-5 d-flex flex-column mb-5">
-            <div style="width: 100%" class="d-flex d-row justify-content-between">
+            <div class="form-box-head d-flex d-row justify-content-between">
                 <h2>Usuarios</h2>
                 <a href="/usuarios/create"><button type="button" class="btn btn-success">Cadastrar</button></a>
             </div>
@@ -16,7 +16,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="align-middle" v-for="usuario, key in this.usuarios" :key="usuario.id">
+                    <tr class="align-middle" v-for="usuario, key in this.usuariosList" :key="usuario.id">
                         <td>
                             <span>{{ usuario.name }}</span>
                         </td>
@@ -51,26 +51,18 @@
     import axios from "axios";
 
     export default {
+        props: ['usuarios'],
         data() {
             return {
-                usuarios: {}
-            };
-        },
-        mounted() {
-            axios.get("http://127.0.0.1:8000/usuarios")
-            .then(response => {
-                this.usuarios = JSON.parse(response.data);
-            })
-            .catch(error => {
-                console.error(error)
-            });
+                usuariosList: this.usuarios
+            }
         },
         methods: {
             async deleteUsuario(key, usuario) {
                 if(confirm("Você realmente deseja deletar o usuario "+usuario.name+"?\nIsso irá apagar todas as relações dele!!! Total: "+usuario.count)){
                     await axios.delete("http://127.0.0.1:8000/usuarios/"+usuario.id)
                     .then(
-                        this.usuarios.splice(key, 1)
+                        this.usuariosList.splice(key, 1)
                     );
                 }
             }

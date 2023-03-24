@@ -54,7 +54,51 @@ table tr {
     line-height: 3em;
 }
 
+table tr .clube_icon {
+    width: 50px;
+    height: 100%;
+}
+
+table tr .clube_coutryFlag {
+    width: 25px;
+    height: 25px;
+}
 
 .container .form-box {
     width: 100%;
+}
+.container .form-box .form-box-head {
+    width: 100%;
+}
+
+.container #detalhes {
+    min-height: 50vh;
+}
+
+.container #detalhes #info {
+    height: 100%;
+    width: 25%
+}
+
+.container #detalhes #clubes {
+    height: 100%;
+    width: 70%
+}
+
+.container #detalhes #clubes img {
+    width: 50px;
+    height: 100%;
+    margin-right: .5em;
+}
+
+.container #detalhes #clubes .list-group .btn-faturas {
+    margin-left: .5em
+}
+
+.container #detalhes #clubes .list-group #lastClubRow {
+    line-height: 2.4rem
+}
+
+.container #detalhes #clubes .list-group #joinClubForm select {
+    margin-right: .5em
 }

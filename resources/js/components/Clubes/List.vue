@@ -1,7 +1,7 @@
 <template>
     <div class="container d-flex">
         <div class="form-box bg-light p-5 d-flex flex-column mb-5">
-            <div style="width: 100%" class="d-flex d-row justify-content-between">
+            <div class="form-box-head d-flex d-row justify-content-between">
                 <h2>Clubes</h2>
                 <a href="/clubes/create"><button type="button" class="btn btn-success">Cadastrar</button></a>
             </div>
@@ -16,10 +16,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="align-middle" v-for="clube, key in this.clubes" :key="clube.id">
-                        <th class="text-center" scope="row">
-                            <img :src="clube.icon" :alt="clube.name" style="width: 50px; height: 100%;">
-                        </th>
+                    <tr class="align-middle" v-for="clube, key in this.clubesList" :key="clube.id">
+                        <td class="text-center" scope="row">
+                            <img :src="clube.icon" :alt="clube.name" class="clube_icon">
+                        </td>
                         <td>
                             <span>{{ clube.name }}</span>
                         </td>
@@ -27,7 +27,7 @@
                             <span>{{ clube.count }} usuários</span>
                         </td>
                         <td>
-                            <img :src="clube.countryFlag" :alt="clube.country" style="width: 25px; height: 25px;">
+                            <img :src="clube.countryFlag" :alt="clube.country" class="clube_coutryFlag">
                             &nbsp;&nbsp;
                             <span>{{ clube.country }}</span>
                         </td>
@@ -49,26 +49,18 @@
     import axios from "axios";
 
     export default {
+        props: ['clubes'],
         data() {
             return {
-                clubes: {}
-            };
-        },
-        mounted() {
-            axios.get("http://127.0.0.1:8000/clubes")
-            .then(response => {
-                this.clubes = JSON.parse(response.data);
-            })
-            .catch(error => {
-                console.error(error)
-            });
+                clubesList: this.clubes
+            }
         },
         methods: {
             async deleteClube(key, clube) {
                 if(confirm("Você realmente deseja deletar o clube "+clube.name+"?\nIsso irá apagar todas as relações dele!!! Total: "+clube.count)){
                     await axios.delete("http://127.0.0.1:8000/clubes/"+clube.id)
                     .then(
-                        this.clubes.splice(key, 1)
+                        this.clubesList.splice(key, 1)
                     );
                 }
             }

@@ -14,23 +14,19 @@ class UsuarioController extends Controller
 {
     public function list(Request $request)
     {
-        if($request->ajax())
-        {
-            if($request->get('clube')) {
-                $relations = Usuario_Clube__relation::where('clube_id', '=', $request->get('clube'))->get('usuario_id');
-                $usuarios = Usuario::whereIn('id', array_column($relations, 'usuario_id'))->orderBy('id', 'asc')->get();
-            }else{
-                $usuarios = Usuario::all();
-            }
-            for($u = 0; $u < count($usuarios); $u++){
-                $qtdClubes = Usuario_Clube__relation::where('usuario_id', '=', $usuarios[$u]['id'])->count();
-                $usuarios[$u]['count'] = $qtdClubes;
-            }
-
-            return response()->json(json_encode($usuarios));
+        if($request->get('clube')) {
+            $relations = Usuario_Clube__relation::where('clube_id', '=', $request->get('clube'))->get('usuario_id');
+            $usuarios = Usuario::whereIn('id', array_column($relations, 'usuario_id'))->orderBy('id', 'asc')->get();
+        }else{
+            $usuarios = Usuario::all();
+        }
+        for($u = 0; $u < count($usuarios); $u++){
+            $qtdClubes = Usuario_Clube__relation::where('usuario_id', '=', $usuarios[$u]['id'])->count();
+            $usuarios[$u]['count'] = $qtdClubes;
         }
 
         return view('usuarios.list', [
+            "usuarios" => json_encode($usuarios),
             "uri" => Route::getCurrentRoute()->uri
         ]);
     }
@@ -44,15 +40,7 @@ class UsuarioController extends Controller
 
     public function create(Request $request)
     {
-        $form = $request->post();
-
-        return Usuario::create(
-            [
-                "name" => $form['name'],
-                "email" => $form['email'],
-                "phone" => $form['phone']
-            ]
-        );
+        return Usuario::create($request->post());
     }
 
     public function show($id)

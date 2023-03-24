@@ -28,36 +28,18 @@
         props: ['usuario'],
         data() {
             return {
-                form: {
-                    name: '',
-                    email: '',
-                    phone: ''
-                }
+                form: this.usuario
             }
         },
         methods: {
             async save() {
-                var response = await axios.put("http://127.0.0.1:8000/usuarios/edit/"+this.usuario.id, {
-                    name: this.form.name,
-                    email: this.form.email,
-                    phone: this.form.phone
-
-                })
+                var response = await axios.put("http://127.0.0.1:8000/usuarios/edit/"+this.usuario.id, this.form)
                 if (response.status == 200){
                     window.location.href = "http://127.0.0.1:8000/usuarios"
                 }else{
                     alert("Erro ao salvar o Usuario, tente novamente!")
                 }
             }
-        },
-        mounted() {
-            axios.get("http://127.0.0.1:8000/usuarios/"+this.usuario.id)
-            .then(response => {
-                    this.form = JSON.parse(response.data)
-            })
-            .catch(error => {
-                console.error(error)
-            });
         }
     }
 </script>

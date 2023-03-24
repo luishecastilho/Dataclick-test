@@ -40,38 +40,18 @@
         props: ['clube'],
         data() {
             return {
-                form: {
-                    name: '',
-                    icon: '',
-                    country: '',
-                    countryFlag: ''
-                }
+                form: this.clube
             }
         },
         methods: {
             async save() {
-                var response = await axios.put("http://127.0.0.1:8000/clubes/edit/"+this.clube.id, {
-                    name: this.form.name,
-                    icon: this.form.icon,
-                    country: this.form.country,
-                    countryFlag: this.form.countryFlag
-
-                })
+                var response = await axios.put("http://127.0.0.1:8000/clubes/edit/"+this.clube.id, this.form)
                 if (response.status == 200){
                     window.location.href = "http://127.0.0.1:8000/clubes"
                 }else{
                     alert("Erro ao salvar o Clube, tente novamente!")
                 }
             }
-        },
-        mounted() {
-            axios.get("http://127.0.0.1:8000/clubes/"+this.clube.id)
-            .then(response => {
-                    this.form = JSON.parse(response.data)
-            })
-            .catch(error => {
-                console.error(error)
-            });
         }
     }
 </script>

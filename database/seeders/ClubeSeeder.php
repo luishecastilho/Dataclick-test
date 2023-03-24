@@ -18,7 +18,7 @@ class ClubeSeeder extends Seeder
         Clube::create([
             'name' => 'Flamengo',
             'icon' => 'https://api.sofascore.app/api/v1/team/5981/image',
-            'country' => 'Brazil',
+            'country' => 'Brasil',
             'countryFlag' => 'https://www.sofascore.com/static/images/flags/br.png'
         ]);
 
@@ -26,7 +26,7 @@ class ClubeSeeder extends Seeder
         Clube::create([
             'name' => 'Palmeiras',
             'icon' => 'https://api.sofascore.app/api/v1/team/1963/image',
-            'country' => 'Brazil',
+            'country' => 'Brasil',
             'countryFlag' => 'https://www.sofascore.com/static/images/flags/br.png'
         ]);
 
@@ -34,7 +34,7 @@ class ClubeSeeder extends Seeder
         Clube::create([
             'name' => 'Corinthians',
             'icon' => 'https://api.sofascore.app/api/v1/team/1957/image',
-            'country' => 'Brazil',
+            'country' => 'Brasil',
             'countryFlag' => 'https://www.sofascore.com/static/images/flags/br.png'
         ]);
 
@@ -42,7 +42,7 @@ class ClubeSeeder extends Seeder
         Clube::create([
             'name' => 'Cruzeiro',
             'icon' => 'https://api.sofascore.app/api/v1/team/1954/image',
-            'country' => 'Brazil',
+            'country' => 'Brasil',
             'countryFlag' => 'https://www.sofascore.com/static/images/flags/br.png'
         ]);
 
@@ -50,7 +50,7 @@ class ClubeSeeder extends Seeder
         Clube::create([
             'name' => 'Grêmio',
             'icon' => 'https://api.sofascore.app/api/v1/team/5926/image',
-            'country' => 'Brazil',
+            'country' => 'Brasil',
             'countryFlag' => 'https://www.sofascore.com/static/images/flags/br.png'
         ]);
 
@@ -58,7 +58,7 @@ class ClubeSeeder extends Seeder
         Clube::create([
             'name' => 'Liverpool',
             'icon' => 'https://api.sofascore.app/api/v1/team/44/image',
-            'country' => 'England',
+            'country' => 'Inglaterra',
             'countryFlag' => 'https://www.sofascore.com/static/images/flags/en.png'
         ]);
 
@@ -66,7 +66,7 @@ class ClubeSeeder extends Seeder
         Clube::create([
             'name' => 'Arsenal',
             'icon' => 'https://api.sofascore.app/api/v1/team/42/image',
-            'country' => 'England',
+            'country' => 'Inglaterra',
             'countryFlag' => 'https://www.sofascore.com/static/images/flags/en.png'
         ]);
 
@@ -74,7 +74,7 @@ class ClubeSeeder extends Seeder
         Clube::create([
             'name' => 'Chelsea',
             'icon' => 'https://api.sofascore.app/api/v1/team/38/image',
-            'country' => 'England',
+            'country' => 'Inglaterra',
             'countryFlag' => 'https://www.sofascore.com/static/images/flags/en.png'
         ]);
 
@@ -82,7 +82,7 @@ class ClubeSeeder extends Seeder
         Clube::create([
             'name' => 'Manchester City',
             'icon' => 'https://api.sofascore.app/api/v1/team/17/image',
-            'country' => 'England',
+            'country' => 'Inglaterra',
             'countryFlag' => 'https://www.sofascore.com/static/images/flags/en.png'
         ]);
 
@@ -90,7 +90,7 @@ class ClubeSeeder extends Seeder
         Clube::create([
             'name' => 'Manchester United',
             'icon' => 'https://api.sofascore.app/api/v1/team/35/image',
-            'country' => 'England',
+            'country' => 'Inglaterra',
             'countryFlag' => 'https://www.sofascore.com/static/images/flags/en.png'
         ]);
     }

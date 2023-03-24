@@ -2,7 +2,7 @@
 @extends('layouts.sidebar')
 
 @section('content')
-    <ClubesList />
+    <ClubesList :clubes="{{ $clubes }}"></ClubesList>
 @endsection
 
 </main>
